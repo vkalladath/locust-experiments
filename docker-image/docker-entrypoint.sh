@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #   Copyright 2017 Karol Brejna
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,11 +12,20 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-set -e
+#set -e
 LOCUST_MODE=${LOCUST_MODE:-standalone}
 LOCUST_MASTER_BIND_PORT=${LOCUST_MASTER_BIND_PORT:-5557}
 LOCUST_FILE=${LOCUST_FILE:-locustfile.py}
+echo ${LOCUST_FILE}
+if [ "${LOCUST_FILE:0:4}" = http ] ;
+then
+    wget $LOCUST_FILE
+    ls
+    pwd
+    LOCUST_FILE="${LOCUST_FILE##*/}"
+    echo ${LOCUST_FILE}
 
+fi
 if [ -z ${ATTACKED_HOST+x} ] ; then
     echo "You need to set the URL of the host to be tested (ATTACKED_HOST)."
     exit 1
